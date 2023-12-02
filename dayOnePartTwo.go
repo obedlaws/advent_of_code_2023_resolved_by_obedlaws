@@ -1,81 +1,129 @@
 package main
 
 import (
+	"fmt"
 	"log"
 	"regexp"
-	"strings"
+	"strconv"
 )
-
-var one = regexp.MustCompile("one")
-var two = regexp.MustCompile("two")
-var three = regexp.MustCompile("three")
-var four = regexp.MustCompile("four")
-var five = regexp.MustCompile("five")
-var six = regexp.MustCompile("six")
-var seven = regexp.MustCompile("seven")
-var eight = regexp.MustCompile("eight")
-var nine = regexp.MustCompile("nine")
-var zero = regexp.MustCompile("zero")
 
 type numberInfo struct {
 	number       string
 	initialIndex int
-	finalIndex   int
 }
 
-func dayOnePartTwoFunc() {
-	code := "2911threeninesdvxvheightwobm"
-	// sliceOfValues := strings.Split(code, "three")
-	// re := regexp.MustCompile("two")
-	// numbers := regexp.MustCompile("1|2|3|4|5|6|7|8|9|0")
+func dayOnePartTwoFunc() (int, error) {
+	listOfCodes, errCodes := getCodes()
+	listOfAllNumbers := []int{}
 
-	if strings.Contains(code, "two") {
-		res := regexp.MustCompile("two").FindAllStringIndex(code, -1)
-		var newNumber = numberInfo{
-			"two", res[0][0], res[0][1],
-		}
-
-		log.Println(newNumber)
+	if errCodes != nil {
+		return 0, errCodes
 	}
 
-	// matches := re.FindAllStringIndex(code, -1)
-	// allNumbers := numbers.FindAllStringIndex(code, -1)
+	for _, v := range listOfCodes {
 
-	// log.Print(matches)
-	// log.Println(allNumbers)
-	// log.Print(string(code[matches[0][0]:matches[0][1]]))
+		log.Println(v)
+		listOfCharacters := characterIdentifier(v)
 
-	// for i, v := range sliceOfValues {
-	// 	infoOfSlices[v] = i
-	// }
+		firstNumberString := firstIndexChecker(listOfCharacters)
+		lastNumberString := lastIndexChecker(listOfCharacters)
 
-	// res := ifNumberInString(code, infoOfSlices)
-	// log.Print(infoOfSlices)
+		convFirstNumber := numberConverter(firstNumberString.number)
+		convLastNumber := numberConverter(lastNumberString.number)
+
+		stringNumber := fmt.Sprintf("%s%s", convFirstNumber, convLastNumber)
+		intNumber, errConverter := strconv.Atoi(stringNumber)
+		if errConverter != nil {
+			return 0, errConverter
+		}
+		log.Println(convFirstNumber, convLastNumber)
+		listOfAllNumbers = append(listOfAllNumbers, int(intNumber))
+
+	}
+
+	sum := addAllNumbers(listOfAllNumbers)
+
+	return sum, nil
+
 }
 
-// func seperateLetters(code []string) []string {
-// 	infoOfLetters :=
+func characterIdentifier(code string) []numberInfo {
+	listOfNumberInfo := []numberInfo{}
+	list := [][]int{}
+	regexList := []string{"zero", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"}
+	for _, v := range regexList {
+		res := regexp.MustCompile(v).FindAllStringIndex(code, -1)
+		if len(res) != 0 {
+			for _, v := range res {
+				list = append(list, v)
+			}
+		}
+	}
 
-// 	for i, v := range code {
+	for _, v := range list {
+		listOfNumberInfo = append(listOfNumberInfo, numberInfo{
+			code[v[0]:v[1]], v[0],
+		})
+	}
 
-// 	}
+	return listOfNumberInfo
+}
 
-// 	return []string{}
+func numberConverter(number string) string {
+	selectedNumber := ""
 
-// }
+	switch number {
+	case "one":
+		selectedNumber = "1"
+	case "two":
+		selectedNumber = "2"
+	case "three":
+		selectedNumber = "3"
+	case "four":
+		selectedNumber = "4"
+	case "five":
+		selectedNumber = "5"
+	case "six":
+		selectedNumber = "6"
+	case "seven":
+		selectedNumber = "7"
+	case "eight":
+		selectedNumber = "8"
+	case "nine":
+		selectedNumber = "9"
+	case "zero":
+		selectedNumber = "0"
+	default:
+		selectedNumber = number
+	}
 
-// func ifNumberInString(code string) [][]int {
-// 	matches := []numberInfo{}
+	return selectedNumber
+}
 
-// 	if strings.Contains(code, "one") {
-// 		getOne := one.FindAllStringIndex(code, -1)
-// 		matches = append(matches, numberInfo{
-// 			"one",
-// 			getOne[0][0],
-// 			getOne[0][0],
-// 		})
-// 	}
+func lastIndexChecker(arr []numberInfo) numberInfo {
+	lastIndex := arr[0].initialIndex
+	indexOfLastNumber := 0
 
-// 	return matches
+	for i, v := range arr {
+		if lastIndex < v.initialIndex {
+			indexOfLastNumber = i
+			lastIndex = v.initialIndex
+		}
+	}
 
-// }
+	return arr[indexOfLastNumber]
+}
+
+func firstIndexChecker(arr []numberInfo) numberInfo {
+	firstIndex := arr[0].initialIndex
+	indexOfFirstNumber := 0
+
+	for i, v := range arr {
+		if firstIndex > v.initialIndex {
+			indexOfFirstNumber = i
+			firstIndex = v.initialIndex
+		}
+	}
+
+	return arr[indexOfFirstNumber]
+}

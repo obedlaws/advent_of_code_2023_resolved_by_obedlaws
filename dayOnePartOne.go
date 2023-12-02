@@ -17,9 +17,6 @@ func dayOneFunc() (int, error) {
 	}
 
 	for _, v := range stringsOfCodes {
-		if v == "" {
-			break
-		}
 
 		localNumbers := []string{}
 		array := strings.Split(v, "")

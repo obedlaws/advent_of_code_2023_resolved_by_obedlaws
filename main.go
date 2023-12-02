@@ -1,5 +1,7 @@
 package main
 
+import "log"
+
 func main() {
 
 	/* Day One - Part One: Get the results to calibrate the trebuchet
@@ -16,10 +18,10 @@ func main() {
 
 	/* Day One - Part Two: do the same but with the letters that create numbers*/
 
-	dayOnePartTwoFunc()
-	// if errDayOnePartTwo != nil {
-	// 	log.Panic(errDayOnePartTwo)
-	// }
+	dayOnePartTwoResults, errDayOnePartTwo := dayOnePartTwoFunc()
+	if errDayOnePartTwo != nil {
+		log.Panic(errDayOnePartTwo)
+	}
 
-	// log.Printf("Day One - Part Two: Get the sum of all codes but from the letters. Calibrate BETTER: %v", dayOnePartTwoResults)
+	log.Printf("Day One - Part Two: Get the sum of all codes but from the letters. Calibrate BETTER: %v", dayOnePartTwoResults)
 }
