@@ -1,8 +1,7 @@
-package main
+package dayone
 
 import (
 	"fmt"
-	"log"
 	"regexp"
 	"strconv"
 )
@@ -12,7 +11,7 @@ type numberInfo struct {
 	initialIndex int
 }
 
-func dayOnePartTwoFunc() (int, error) {
+func DayOnePartTwoFunc() (int, error) {
 	listOfCodes, errCodes := getCodes()
 	listOfAllNumbers := []int{}
 
@@ -22,7 +21,6 @@ func dayOnePartTwoFunc() (int, error) {
 
 	for _, v := range listOfCodes {
 
-		log.Println(v)
 		listOfCharacters := characterIdentifier(v)
 
 		firstNumberString := firstIndexChecker(listOfCharacters)
@@ -36,7 +34,6 @@ func dayOnePartTwoFunc() (int, error) {
 		if errConverter != nil {
 			return 0, errConverter
 		}
-		log.Println(convFirstNumber, convLastNumber)
 		listOfAllNumbers = append(listOfAllNumbers, int(intNumber))
 
 	}

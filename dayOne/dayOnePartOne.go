@@ -1,4 +1,4 @@
-package main
+package dayone
 
 import (
 	"errors"
@@ -8,7 +8,7 @@ import (
 	"strings"
 )
 
-func dayOneFunc() (int, error) {
+func DayOneFunc() (int, error) {
 	stringsOfCodes, errCodes := getCodes()
 	convertedNumbers := []int{}
 
@@ -40,7 +40,7 @@ func dayOneFunc() (int, error) {
 }
 
 func getCodes() ([]string, error) {
-	content, err := os.ReadFile("dayOneCodes.txt")
+	content, err := os.ReadFile("./dayOne/dayOneCodes.txt")
 	if err != nil {
 		return []string{}, err
 	}
